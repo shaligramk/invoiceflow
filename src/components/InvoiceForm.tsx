@@ -14,9 +14,19 @@ const currencies = [
   { code: 'GBP', symbol: '£', name: 'British Pound' },
   { code: 'JPY', symbol: '¥', name: 'Japanese Yen' },
   { code: 'CAD', symbol: 'C$', name: 'Canadian Dollar' },
-  { code: 'TWD', symbol: 'NT$', name: 'New Taiwan Dollar' },
-  { code: 'INR', symbol: '₹', name: 'Indian Rupee' },
+  { code: 'AUD', symbol: 'A$', name: 'Australian Dollar' },
+  { code: 'CHF', symbol: 'Fr', name: 'Swiss Franc' },
   { code: 'CNY', symbol: '¥', name: 'Chinese Yuan' },
+  { code: 'HKD', symbol: 'HK$', name: 'Hong Kong Dollar' },
+  { code: 'NZD', symbol: 'NZ$', name: 'New Zealand Dollar' },
+  { code: 'SEK', symbol: 'kr', name: 'Swedish Krona' },
+  { code: 'KRW', symbol: '₩', name: 'South Korean Won' },
+  { code: 'SGD', symbol: 'S$', name: 'Singapore Dollar' },
+  { code: 'NOK', symbol: 'kr', name: 'Norwegian Krone' },
+  { code: 'MXN', symbol: '$', name: 'Mexican Peso' },
+  { code: 'INR', symbol: '₹', name: 'Indian Rupee' },
+  { code: 'RUB', symbol: '₽', name: 'Russian Ruble' },
+  { code: 'ZAR', symbol: 'R', name: 'South African Rand' },
 ];
 
 const initialData: InvoiceData = {
