@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { format } from 'date-fns';
-import { Plus, Trash2, Upload, RefreshCw } from 'lucide-react';
+import { Plus, Trash2, Upload, RefreshCw, Mail } from 'lucide-react';
 import type { InvoiceData, InvoiceItem } from '../types/invoice';
 
 interface Props {
@@ -91,8 +91,15 @@ export default function InvoiceForm({ data, onChange }: Props) {
     onChange(initialData);
   };
 
-  const inputClasses = "mt-1 h-12 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 border px-4";
-  const textareaClasses = "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-4";
+  const handleEmailInvoice = () => {
+    const subject = encodeURIComponent(`Invoice #${data.invoiceNumber} from ${data.billFrom.name}`);
+    const body = encodeURIComponent(`Please find attached Invoice #${data.invoiceNumber}.\n\nBest regards,\n${data.billFrom.name}`);
+    const mailtoLink = `mailto:${data.billTo.email}?subject=${subject}&body=${body}`;
+    window.location.href = mailtoLink;
+  };
+
+  const inputClasses = "mt-1 h-14 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 border px-4 text-base";
+  const textareaClasses = "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-4 text-base";
 
   return (
     <div className="space-y-8">
@@ -120,13 +127,24 @@ export default function InvoiceForm({ data, onChange }: Props) {
             />
           </div>
         </div>
-        <button
-          onClick={clearForm}
-          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-        >
-          <RefreshCw className="h-4 w-4 mr-2" />
-          Create New Invoice
-        </button>
+        <div className="flex gap-4">
+          <button
+            onClick={handleEmailInvoice}
+            disabled={!data.billTo.email}
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            title={!data.billTo.email ? "Add recipient email first" : "Send invoice via email"}
+          >
+            <Mail className="h-4 w-4 mr-2" />
+            Email Invoice
+          </button>
+          <button
+            onClick={clearForm}
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+          >
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Create New Invoice
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
@@ -136,6 +154,7 @@ export default function InvoiceForm({ data, onChange }: Props) {
             type="text"
             value={data.invoiceNumber}
             onChange={(e) => onChange({ ...data, invoiceNumber: e.target.value })}
+            placeholder="e.g., INV-001"
             className={inputClasses}
           />
         </div>
@@ -183,6 +202,7 @@ export default function InvoiceForm({ data, onChange }: Props) {
               type="text"
               value={data.billFrom.name}
               onChange={(e) => onChange({ ...data, billFrom: { ...data.billFrom, name: e.target.value } })}
+              placeholder="Your Company Name"
               className={inputClasses}
             />
           </div>
@@ -192,6 +212,7 @@ export default function InvoiceForm({ data, onChange }: Props) {
               type="email"
               value={data.billFrom.email}
               onChange={(e) => onChange({ ...data, billFrom: { ...data.billFrom, email: e.target.value } })}
+              placeholder="your@email.com"
               className={inputClasses}
             />
           </div>
@@ -200,6 +221,7 @@ export default function InvoiceForm({ data, onChange }: Props) {
             <textarea
               value={data.billFrom.address}
               onChange={(e) => onChange({ ...data, billFrom: { ...data.billFrom, address: e.target.value } })}
+              placeholder="Street Address&#10;City, State ZIP&#10;Country"
               rows={3}
               className={textareaClasses}
             />
@@ -214,6 +236,7 @@ export default function InvoiceForm({ data, onChange }: Props) {
               type="text"
               value={data.billTo.name}
               onChange={(e) => onChange({ ...data, billTo: { ...data.billTo, name: e.target.value } })}
+              placeholder="Client/Company Name"
               className={inputClasses}
             />
           </div>
@@ -223,6 +246,7 @@ export default function InvoiceForm({ data, onChange }: Props) {
               type="email"
               value={data.billTo.email}
               onChange={(e) => onChange({ ...data, billTo: { ...data.billTo, email: e.target.value } })}
+              placeholder="client@email.com"
               className={inputClasses}
             />
           </div>
@@ -231,6 +255,7 @@ export default function InvoiceForm({ data, onChange }: Props) {
             <textarea
               value={data.billTo.address}
               onChange={(e) => onChange({ ...data, billTo: { ...data.billTo, address: e.target.value } })}
+              placeholder="Street Address&#10;City, State ZIP&#10;Country"
               rows={3}
               className={textareaClasses}
             />
@@ -259,29 +284,33 @@ export default function InvoiceForm({ data, onChange }: Props) {
                   type="text"
                   value={item.description}
                   onChange={(e) => handleItemChange(index, 'description', e.target.value)}
-                  placeholder="Description"
+                  placeholder="Item description (e.g., Web Design, Consulting, etc.)"
                   className={`${inputClasses} min-w-0 sm:min-w-[300px]`}
-                />
-              </div>
-              <div className="w-full sm:w-24">
-                <input
-                  type="number"
-                  value={item.quantity}
-                  onChange={(e) => handleItemChange(index, 'quantity', parseFloat(e.target.value))}
-                  placeholder="Qty"
-                  className={inputClasses}
                 />
               </div>
               <div className="w-full sm:w-32">
                 <input
                   type="number"
-                  value={item.rate}
-                  onChange={(e) => handleItemChange(index, 'rate', parseFloat(e.target.value))}
-                  placeholder="Rate"
+                  value={item.quantity}
+                  onChange={(e) => handleItemChange(index, 'quantity', parseFloat(e.target.value))}
+                  placeholder="Hours/Qty"
+                  min="0"
+                  step="1"
                   className={inputClasses}
                 />
               </div>
-              <div className="w-full sm:w-32 pt-3">
+              <div className="w-full sm:w-40">
+                <input
+                  type="number"
+                  value={item.rate}
+                  onChange={(e) => handleItemChange(index, 'rate', parseFloat(e.target.value))}
+                  placeholder="Rate per unit"
+                  min="0"
+                  step="0.01"
+                  className={inputClasses}
+                />
+              </div>
+              <div className="w-full sm:w-32 pt-4 text-lg font-medium">
                 {currencies.find(c => c.code === data.currency)?.symbol}
                 {(item.quantity * item.rate).toFixed(2)}
               </div>
@@ -304,7 +333,7 @@ export default function InvoiceForm({ data, onChange }: Props) {
           onChange={(e) => onChange({ ...data, notes: e.target.value })}
           rows={4}
           className={textareaClasses}
-          placeholder="Payment terms, additional notes..."
+          placeholder="Payment terms, bank details, additional notes..."
         />
       </div>
     </div>

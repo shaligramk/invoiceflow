@@ -12,9 +12,19 @@ const currencies = {
   GBP: '£',
   JPY: '¥',
   CAD: 'C$',
-  TWD: 'NT$',
-  INR: '₹',
+  AUD: 'A$',
+  CHF: 'Fr',
   CNY: '¥',
+  HKD: 'HK$',
+  NZD: 'NZ$',
+  SEK: 'kr',
+  KRW: '₩',
+  SGD: 'S$',
+  NOK: 'kr',
+  MXN: '$',
+  INR: '₹',
+  RUB: '₽',
+  ZAR: 'R',
 };
 
 export default function InvoicePreview({ data }: Props) {
