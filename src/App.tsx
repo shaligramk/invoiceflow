@@ -35,8 +35,8 @@ const initialData: InvoiceData = {
   items: [
     {
       description: '',
-      quantity: 1,
-      rate: 0,
+      rate: '',
+      quantity: '',
     },
   ],
   notes: '',

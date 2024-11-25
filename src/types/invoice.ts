@@ -1,7 +1,14 @@
+export interface Contact {
+  name: string;
+  email: string;
+  address: string;
+  phone: string;
+}
+
 export interface InvoiceItem {
   description: string;
-  quantity: number;
-  rate: number;
+  quantity: string | number;
+  rate: string | number;
 }
 
 export interface Tax {
@@ -15,17 +22,9 @@ export interface InvoiceData {
   dueDate: Date;
   logo: string;
   currency: string;
-  tax: Tax;
-  billFrom: {
-    name: string;
-    email: string;
-    address: string;
-  };
-  billTo: {
-    name: string;
-    email: string;
-    address: string;
-  };
+  billFrom: Contact;
+  billTo: Contact;
   items: InvoiceItem[];
   notes: string;
+  tax: Tax;
 }
