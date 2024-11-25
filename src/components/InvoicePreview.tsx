@@ -28,7 +28,11 @@ const currencies = {
 };
 
 export default function InvoicePreview({ data }: Props) {
-  const total = data.items.reduce((sum, item) => sum + item.quantity * item.rate, 0);
+  const subtotal = data.items.reduce((sum, item) => sum + item.quantity * item.rate, 0);
+  const taxAmount = data.tax.isPercentage
+    ? (subtotal * data.tax.amount) / 100
+    : data.tax.amount;
+  const total = subtotal + taxAmount;
   const currencySymbol = currencies[data.currency as keyof typeof currencies];
 
   return (
@@ -88,6 +92,16 @@ export default function InvoicePreview({ data }: Props) {
           </tbody>
           <tfoot>
             <tr>
+              <td colSpan={3} className="text-right py-3 px-2 font-medium">Subtotal:</td>
+              <td className="text-right py-3 px-2 font-medium">{currencySymbol}{subtotal.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td colSpan={3} className="text-right py-3 px-2 font-medium">
+                Tax {data.tax.isPercentage ? `(${data.tax.amount}%)` : ''}:
+              </td>
+              <td className="text-right py-3 px-2 font-medium">{currencySymbol}{taxAmount.toFixed(2)}</td>
+            </tr>
+            <tr className="border-t border-gray-200">
               <td colSpan={3} className="text-right py-3 px-2 font-semibold">Total:</td>
               <td className="text-right py-3 px-2 font-semibold">{currencySymbol}{total.toFixed(2)}</td>
             </tr>

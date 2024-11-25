@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { format } from 'date-fns';
-import { Plus, Trash2, Upload, RefreshCw, Mail } from 'lucide-react';
+import { Plus, Trash2, Upload, RefreshCw, Mail, Percent } from 'lucide-react';
 import type { InvoiceData, InvoiceItem } from '../types/invoice';
 
 interface Props {
@@ -35,6 +35,10 @@ const initialData: InvoiceData = {
   dueDate: new Date(),
   logo: '',
   currency: 'USD',
+  tax: {
+    amount: 0,
+    isPercentage: true
+  },
   billFrom: {
     name: '',
     email: '',
@@ -191,6 +195,48 @@ export default function InvoiceForm({ data, onChange }: Props) {
             </option>
           ))}
         </select>
+      </div>
+
+      <div className="flex items-end gap-4">
+        <div className="flex-1">
+          <label className="block text-sm font-medium text-gray-700">Tax Amount</label>
+          <div className="relative">
+            <input
+              type="number"
+              min="0"
+              step={data.tax.isPercentage ? "0.1" : "1"}
+              value={data.tax.amount}
+              onChange={(e) => onChange({
+                ...data,
+                tax: {
+                  ...data.tax,
+                  amount: parseFloat(e.target.value) || 0
+                }
+              })}
+              className={inputClasses}
+            />
+            {data.tax.isPercentage && (
+              <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                <Percent className="h-4 w-4 text-gray-400" />
+              </div>
+            )}
+          </div>
+        </div>
+        <div>
+          <button
+            type="button"
+            onClick={() => onChange({
+              ...data,
+              tax: {
+                ...data.tax,
+                isPercentage: !data.tax.isPercentage
+              }
+            })}
+            className="h-14 px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            {data.tax.isPercentage ? 'Switch to Fixed Amount' : 'Switch to Percentage'}
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

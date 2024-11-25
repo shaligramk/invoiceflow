@@ -4,12 +4,18 @@ export interface InvoiceItem {
   rate: number;
 }
 
+export interface Tax {
+  amount: number;
+  isPercentage: boolean;
+}
+
 export interface InvoiceData {
   invoiceNumber: string;
   date: Date;
   dueDate: Date;
   logo: string;
   currency: string;
+  tax: Tax;
   billFrom: {
     name: string;
     email: string;
