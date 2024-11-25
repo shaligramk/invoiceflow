@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { usePDF } from 'react-to-pdf';
 import { FileDown, Printer, FileText } from 'lucide-react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import type { InvoiceData } from './types/invoice';
 import InvoiceForm from './components/InvoiceForm';
 import InvoicePreview from './components/InvoicePreview';
+import PrivacyPolicy from './components/PrivacyPolicy';
+import TermsOfService from './components/TermsOfService';
 
 const initialData: InvoiceData = {
   invoiceNumber: '001',
@@ -42,7 +45,7 @@ function App() {
     window.print();
   };
 
-  return (
+  const MainContent = () => (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <header className="bg-gradient-to-b from-gray-800 to-gray-900 text-white sticky top-0 z-50">
         <div className="max-w-7xl mx-auto py-6 sm:py-8 px-4 sm:px-6 lg:px-8">
@@ -177,14 +180,24 @@ function App() {
             <p className="text-gray-400 text-sm">
               &copy; {new Date().getFullYear()} InvoiceFlow. All rights reserved.
               <span className="mx-2">·</span>
-              <a href="/privacy-policy.html" className="hover:text-white transition-colors">Privacy Policy</a>
+              <Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
               <span className="mx-2">·</span>
-              <a href="/terms-of-service.html" className="hover:text-white transition-colors">Terms of Service</a>
+              <Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
             </p>
           </div>
         </div>
       </footer>
     </div>
+  );
+
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<MainContent />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<TermsOfService />} />
+      </Routes>
+    </Router>
   );
 }
 
