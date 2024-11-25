@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePDF } from 'react-to-pdf';
 import { FileDown, Printer, FileText } from 'lucide-react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
@@ -7,6 +7,8 @@ import InvoiceForm from './components/InvoiceForm';
 import InvoicePreview from './components/InvoicePreview';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
+import Header from './components/Header';
+import { translations } from './i18n/translations';
 
 const initialData: InvoiceData = {
   invoiceNumber: '001',
@@ -40,18 +42,40 @@ const initialData: InvoiceData = {
 
 function App() {
   const [invoiceData, setInvoiceData] = useState<InvoiceData>(initialData);
+  const [language, setLanguage] = useState<keyof typeof translations>('en');
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    return false;
+  });
+
   const { toPDF, targetRef } = usePDF({
     filename: `invoice-${invoiceData.invoiceNumber}.pdf`,
     page: { margin: 20 },
   });
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
 
   const handlePrint = () => {
     window.print();
   };
 
   const MainContent = () => (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      <header className="bg-gradient-to-b from-gray-800 to-gray-900 text-white sticky top-0 z-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+      <Header
+        language={language}
+        isDarkMode={isDarkMode}
+        onLanguageChange={setLanguage}
+        onThemeToggle={() => setIsDarkMode(!isDarkMode)}
+      />
+      <header className="bg-gradient-to-b from-gray-800 to-gray-900 text-white sticky top-16 z-50">
         <div className="max-w-7xl mx-auto py-6 sm:py-8 px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex flex-col gap-2">
