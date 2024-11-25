@@ -195,13 +195,18 @@ function App() {
               </ul>
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-2">Contact</h3>
-              <p className="text-gray-400 text-sm">
-                Questions or feedback? Email us at:<br />
-                <a href="mailto:support@freepdfinvoicegenerator.com" className="hover:text-white transition-colors">
-                  support@freepdfinvoicegenerator.com
-                </a>
+              <h3 className="text-lg font-semibold mb-2">Support the Project</h3>
+              <p className="text-gray-400 text-sm mb-4">
+                If you find InvoiceFlow helpful, consider supporting the project by buying me a coffee!
               </p>
+              <a
+                href="https://buymeacoffee.com/shawnshaligram"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-colors"
+              >
+                ☕️ Buy me a coffee
+              </a>
             </div>
           </div>
           <div className="mt-8 pt-8 border-t border-gray-800 text-center">
