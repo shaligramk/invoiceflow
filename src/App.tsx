@@ -14,6 +14,10 @@ const initialData: InvoiceData = {
   dueDate: new Date(),
   logo: '',
   currency: 'USD',
+  tax: {
+    amount: 0,
+    isPercentage: true
+  },
   billFrom: {
     name: '',
     email: '',
