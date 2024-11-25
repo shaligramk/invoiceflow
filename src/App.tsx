@@ -175,7 +175,11 @@ function App() {
           </div>
           <div className="mt-8 pt-8 border-t border-gray-800 text-center">
             <p className="text-gray-400 text-sm">
-              © {new Date().getFullYear()} InvoiceFlow. All rights reserved.
+              &copy; {new Date().getFullYear()} InvoiceFlow. All rights reserved.
+              <span className="mx-2">·</span>
+              <a href="/privacy-policy.html" className="hover:text-white transition-colors">Privacy Policy</a>
+              <span className="mx-2">·</span>
+              <a href="/terms-of-service.html" className="hover:text-white transition-colors">Terms of Service</a>
             </p>
           </div>
         </div>
