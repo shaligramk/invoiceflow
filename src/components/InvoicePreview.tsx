@@ -27,13 +27,29 @@ const currencies = {
   ZAR: 'R',
 };
 
+const parseNumber = (value: string | number): number => {
+  if (typeof value === 'number') return value;
+  if (!value) return 0;
+  const parsed = parseFloat(value.replace(/[^\d.-]/g, ''));
+  return isNaN(parsed) ? 0 : parsed;
+};
+
 export default function InvoicePreview({ data }: Props) {
-  const subtotal = data.items.reduce((sum, item) => sum + item.quantity * item.rate, 0);
+  const subtotal = data.items.reduce((sum, item) => {
+    const quantity = parseNumber(item.quantity);
+    const rate = parseNumber(item.rate);
+    return sum + (quantity * rate);
+  }, 0);
+
   const taxAmount = data.tax.isPercentage
     ? (subtotal * data.tax.amount) / 100
     : data.tax.amount;
   const total = subtotal + taxAmount;
   const currencySymbol = currencies[data.currency as keyof typeof currencies];
+
+  const formatAmount = (amount: number) => {
+    return amount.toFixed(2);
+  };
 
   return (
     <div className="bg-white p-8 shadow-lg">
@@ -81,29 +97,39 @@ export default function InvoicePreview({ data }: Props) {
             </tr>
           </thead>
           <tbody>
-            {data.items.map((item, index) => (
-              <tr key={index} className="border-b border-gray-200">
-                <td className="py-3 px-2">{item.description}</td>
-                <td className="text-right py-3 px-2">{item.quantity}</td>
-                <td className="text-right py-3 px-2">{currencySymbol}{item.rate.toFixed(2)}</td>
-                <td className="text-right py-3 px-2">{currencySymbol}{(item.quantity * item.rate).toFixed(2)}</td>
-              </tr>
-            ))}
+            {data.items.map((item, index) => {
+              const quantity = parseNumber(item.quantity);
+              const rate = parseNumber(item.rate);
+              const amount = quantity * rate;
+              
+              return (
+                <tr key={index} className="border-b border-gray-200">
+                  <td className="py-3 px-2">{item.description}</td>
+                  <td className="text-right py-3 px-2">{item.quantity || ''}</td>
+                  <td className="text-right py-3 px-2">
+                    {rate ? `${currencySymbol}${formatAmount(rate)}` : ''}
+                  </td>
+                  <td className="text-right py-3 px-2">
+                    {amount ? `${currencySymbol}${formatAmount(amount)}` : ''}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
           <tfoot>
             <tr>
               <td colSpan={3} className="text-right py-3 px-2 font-medium">Subtotal:</td>
-              <td className="text-right py-3 px-2 font-medium">{currencySymbol}{subtotal.toFixed(2)}</td>
+              <td className="text-right py-3 px-2 font-medium">{currencySymbol}{formatAmount(subtotal)}</td>
             </tr>
             <tr>
               <td colSpan={3} className="text-right py-3 px-2 font-medium">
                 Tax {data.tax.isPercentage ? `(${data.tax.amount}%)` : ''}:
               </td>
-              <td className="text-right py-3 px-2 font-medium">{currencySymbol}{taxAmount.toFixed(2)}</td>
+              <td className="text-right py-3 px-2 font-medium">{currencySymbol}{formatAmount(taxAmount)}</td>
             </tr>
             <tr className="border-t border-gray-200">
               <td colSpan={3} className="text-right py-3 px-2 font-semibold">Total:</td>
-              <td className="text-right py-3 px-2 font-semibold">{currencySymbol}{total.toFixed(2)}</td>
+              <td className="text-right py-3 px-2 font-semibold">{currencySymbol}{formatAmount(total)}</td>
             </tr>
           </tfoot>
         </table>
