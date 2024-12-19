@@ -1,19 +1,7 @@
-export interface Contact {
-  name: string;
-  email: string;
-  address: string;
-  phone: string;
-}
-
 export interface InvoiceItem {
   description: string;
-  quantity: string | number;
-  rate: string | number;
-}
-
-export interface Tax {
-  amount: number;
-  isPercentage: boolean;
+  quantity: number;
+  rate: number;
 }
 
 export interface InvoiceData {
@@ -22,9 +10,16 @@ export interface InvoiceData {
   dueDate: Date;
   logo: string;
   currency: string;
-  billFrom: Contact;
-  billTo: Contact;
+  billFrom: {
+    name: string;
+    email: string;
+    address: string;
+  };
+  billTo: {
+    name: string;
+    email: string;
+    address: string;
+  };
   items: InvoiceItem[];
   notes: string;
-  tax: Tax;
 }
