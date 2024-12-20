@@ -16,7 +16,7 @@ export function Header({ onDownloadPDF, onPrint }: HeaderProps) {
               <FileText className="h-8 w-8 sm:h-10 sm:w-10" />
               <h1 className="text-2xl sm:text-4xl font-bold">InvoiceFlow</h1>
             </div>
-            <p class="text-gray-300 text-sm sm:text-base max-w-xl" style="font-display: swap;">
+            <p className="text-gray-300 text-sm sm:text-base max-w-xl" style={{ fontDisplay: 'swap' }}>
                 Free online invoice generator for freelancers and small businesses. Create professional invoices easily.
             </p>
           </div>
