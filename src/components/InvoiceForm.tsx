@@ -6,6 +6,8 @@ import type { InvoiceData, InvoiceItem } from '../types/invoice';
 interface Props {
   data: InvoiceData;
   onChange: (data: InvoiceData) => void;
+  onDownloadPDF: () => void;
+  onPrint: () => void;
 }
 
 const currencies = [
@@ -55,7 +57,7 @@ const initialData: InvoiceData = {
   notes: '',
 };
 
-export default function InvoiceForm({ data, onChange }: Props) {
+export default function InvoiceForm({ data, onChange, onDownloadPDF, onPrint }: Props) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleItemChange = (index: number, field: keyof InvoiceItem, value: string | number) => {
