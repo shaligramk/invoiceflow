@@ -2,11 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export function Footer() {
-  // Function to handle scroll to top
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   return (
     <footer className="bg-gray-900 text-white py-6 mt-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -19,30 +14,37 @@ export function Footer() {
             </p>
           </div>
           <div>
-            <h3 className="text-lg font-semibold mb-2">Features</h3>
+            <h3 className="text-lg font-semibold mb-2">Quick Links</h3>
             <ul className="text-gray-400 text-sm space-y-1">
-              <li>Multiple Currency Support</li>
-              <li>Custom Logo Upload</li>
-              <li>Instant PDF Download</li>
-              <li>Professional Templates</li>
-              <li>No Registration Required</li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold mb-2">Resources</h3>
-            <ul className="text-gray-400 text-sm space-y-1">
+              <li>
+                <Link to="/about" className="hover:text-white transition-colors">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="hover:text-white transition-colors">
+                  Contact
+                </Link>
+              </li>
               <li>
                 <Link to="/help" className="hover:text-white transition-colors">
                   Help Center
                 </Link>
               </li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Legal</h3>
+            <ul className="text-gray-400 text-sm space-y-1">
               <li>
-                <a
-                  href="mailto:support@freepdfinvoicegenerator.com"
-                  className="hover:text-white transition-colors"
-                >
-                  Contact Support
-                </a>
+                <Link to="/privacy" className="hover:text-white transition-colors">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link to="/terms" className="hover:text-white transition-colors">
+                  Terms & Conditions
+                </Link>
               </li>
             </ul>
           </div>
@@ -51,12 +53,6 @@ export function Footer() {
           <p className="text-gray-400 text-sm">
             © {new Date().getFullYear()} InvoiceFlow. All rights reserved.
           </p>
-          <button
-            onClick={scrollToTop}
-            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
-          >
-            Scroll to Top
-          </button>
         </div>
       </div>
     </footer>
