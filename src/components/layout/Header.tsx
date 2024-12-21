@@ -1,5 +1,6 @@
 import React from 'react';
 import { FileText } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface HeaderProps {
   onDownloadPDF: () => void;
@@ -20,21 +21,37 @@ export function Header({ onDownloadPDF, onPrint }: HeaderProps) {
               Free online invoice generator for freelancers and small businesses. Create professional invoices in seconds.
             </p>
           </div>
-          <div className="flex gap-3 sm:gap-4">
-            <button
-              onClick={onDownloadPDF}
-              className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors"
-              aria-label="Download invoice as PDF"
-            >
-              Download PDF
-            </button>
-            <button
-              onClick={onPrint}
-              className="inline-flex items-center justify-center px-4 py-2 border border-gray-600 text-sm font-medium rounded-md shadow-sm text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors"
-              aria-label="Print invoice"
-            >
-              Print
-            </button>
+          <div className="flex flex-col sm:flex-row items-center gap-4">
+            <nav className="flex gap-4">
+              <Link
+                to="/about"
+                className="text-sm sm:text-base font-medium hover:text-gray-300 transition-colors"
+              >
+                About Us
+              </Link>
+              <Link
+                to="/help"
+                className="text-sm sm:text-base font-medium hover:text-gray-300 transition-colors"
+              >
+                Help Center
+              </Link>
+            </nav>
+            <div className="flex gap-3 sm:gap-4">
+              <button
+                onClick={onDownloadPDF}
+                className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors"
+                aria-label="Download invoice as PDF"
+              >
+                Download PDF
+              </button>
+              <button
+                onClick={onPrint}
+                className="inline-flex items-center justify-center px-4 py-2 border border-gray-600 text-sm font-medium rounded-md shadow-sm text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors"
+                aria-label="Print invoice"
+              >
+                Print
+              </button>
+            </div>
           </div>
         </div>
       </div>
