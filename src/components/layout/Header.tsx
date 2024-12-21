@@ -24,6 +24,12 @@ export function Header({ onDownloadPDF, onPrint }: HeaderProps) {
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <nav className="flex gap-4">
               <Link
+                to="/"
+                className="text-sm sm:text-base font-medium hover:text-gray-300 transition-colors"
+              >
+                Home
+              </Link>
+              <Link
                 to="/about"
                 className="text-sm sm:text-base font-medium hover:text-gray-300 transition-colors"
               >
@@ -34,6 +40,12 @@ export function Header({ onDownloadPDF, onPrint }: HeaderProps) {
                 className="text-sm sm:text-base font-medium hover:text-gray-300 transition-colors"
               >
                 Help Center
+              </Link>
+              <Link
+                to="/contact"
+                className="text-sm sm:text-base font-medium hover:text-gray-300 transition-colors"
+              >
+                Contact Us
               </Link>
             </nav>
             <div className="flex gap-3 sm:gap-4">
