@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { usePDF } from 'react-to-pdf';
 import type { InvoiceData } from '../types/invoice';
 import InvoiceForm from '../components/InvoiceForm';
-import InvoicePreview from '../components/InvoicePreview';
 import { Header } from '../components/layout/Header';
 import { Footer } from '../components/layout/Footer';
 
@@ -58,6 +57,8 @@ export default function InvoicePage() {
             </div>
             
             {/* Preview Section */}
+            {/* Commenting out the desktop preview */}
+            {/*
             <div className="hidden lg:block">
               <div className="sticky top-28">
                 <div className="overflow-auto max-h-[calc(100vh-8rem)]" ref={targetRef}>
@@ -65,8 +66,11 @@ export default function InvoicePage() {
                 </div>
               </div>
             </div>
+            */}
 
             {/* Mobile Preview Toggle */}
+            {/* Commenting out the mobile preview button */}
+            {/*
             <div className="fixed bottom-4 right-4 lg:hidden z-50">
               <button
                 onClick={() => {
@@ -81,8 +85,11 @@ export default function InvoicePage() {
                 Preview
               </button>
             </div>
+            */}
 
             {/* Mobile Preview Panel */}
+            {/* Commenting out the mobile preview panel */}
+            {/*
             <div
               id="mobile-preview"
               className="fixed inset-0 bg-white transform translate-y-full transition-transform duration-300 ease-in-out lg:hidden z-40"
@@ -108,6 +115,7 @@ export default function InvoicePage() {
                 </div>
               </div>
             </div>
+            */}
           </div>
         </div>
       </main>
