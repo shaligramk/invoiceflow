@@ -7,7 +7,6 @@ interface Props {
   data: InvoiceData;
   onChange: (data: InvoiceData) => void;
   onDownloadPDF: () => void;
-  onPrint: () => void;
 }
 
 const currencies = [
@@ -57,7 +56,7 @@ const initialData: InvoiceData = {
   notes: '',
 };
 
-export default function InvoiceForm({ data, onChange, onDownloadPDF, onPrint }: Props) {
+export default function InvoiceForm({ data, onChange, onDownloadPDF }: Props) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleItemChange = (index: number, field: keyof InvoiceItem, value: string | number) => {
@@ -135,13 +134,6 @@ export default function InvoiceForm({ data, onChange, onDownloadPDF, onPrint }: 
               aria-label="Download invoice as PDF"
             >
               Download PDF
-            </button>
-            <button
-              onClick={onPrint}
-              className="inline-flex items-center justify-center px-4 py-2 border border-gray-600 text-sm font-medium rounded-md shadow-sm text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors"
-              aria-label="Print invoice"
-            >
-              Print
             </button>
           </div>
         </div>
