@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://freepdfinvoicegenerator.com/sitemap.xml
+Sitemap: https://sensational-dolphin-eb8f34.netlify.app/sitemap.xml

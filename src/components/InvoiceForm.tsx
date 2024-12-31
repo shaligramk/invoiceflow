@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { format } from 'date-fns';
-import { Plus, Trash2, Upload, RefreshCw, Mail } from 'lucide-react';
+import { Plus, Trash2, Upload, Download } from 'lucide-react';
 import type { InvoiceData, InvoiceItem } from '../types/invoice';
 
 interface Props {
@@ -9,71 +9,12 @@ interface Props {
   onDownloadPDF: () => void;
 }
 
-const currencies = [
-  { code: 'USD', symbol: '$', name: 'US Dollar' },
-  { code: 'EUR', symbol: '€', name: 'Euro' },
-  { code: 'GBP', symbol: '£', name: 'British Pound' },
-  { code: 'JPY', symbol: '¥', name: 'Japanese Yen' },
-  { code: 'CAD', symbol: 'C$', name: 'Canadian Dollar' },
-  { code: 'AUD', symbol: 'A$', name: 'Australian Dollar' },
-  { code: 'CHF', symbol: 'Fr', name: 'Swiss Franc' },
-  { code: 'CNY', symbol: '¥', name: 'Chinese Yuan' },
-  { code: 'HKD', symbol: 'HK$', name: 'Hong Kong Dollar' },
-  { code: 'NZD', symbol: 'NZ$', name: 'New Zealand Dollar' },
-  { code: 'SEK', symbol: 'kr', name: 'Swedish Krona' },
-  { code: 'KRW', symbol: '₩', name: 'South Korean Won' },
-  { code: 'SGD', symbol: 'S$', name: 'Singapore Dollar' },
-  { code: 'NOK', symbol: 'kr', name: 'Norwegian Krone' },
-  { code: 'MXN', symbol: '$', name: 'Mexican Peso' },
-  { code: 'INR', symbol: '₹', name: 'Indian Rupee' },
-  { code: 'RUB', symbol: '₽', name: 'Russian Ruble' },
-  { code: 'ZAR', symbol: 'R', name: 'South African Rand' },
-];
-
-const initialData: InvoiceData = {
-  invoiceNumber: '',
-  date: new Date(),
-  dueDate: new Date(),
-  logo: '',
-  currency: 'USD',
-  billFrom: {
-    name: '',
-    email: '',
-    address: '',
-  },
-  billTo: {
-    name: '',
-    email: '',
-    address: '',
-  },
-  items: [
-    {
-      description: '',
-      quantity: 1,
-      rate: 0,
-    },
-  ],
-  notes: '',
-};
-
 export default function InvoiceForm({ data, onChange, onDownloadPDF }: Props) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleItemChange = (index: number, field: keyof InvoiceItem, value: string | number) => {
     const newItems = [...data.items];
     newItems[index] = { ...newItems[index], [field]: value };
-    onChange({ ...data, items: newItems });
-  };
-
-  const addItem = () => {
-    onChange({
-      ...data,
-      items: [...data.items, { description: '', quantity: 1, rate: 0 }],
-    });
-  };
-
-  const removeItem = (index: number) => {
-    const newItems = data.items.filter((_, i) => i !== index);
     onChange({ ...data, items: newItems });
   };
 
@@ -88,15 +29,16 @@ export default function InvoiceForm({ data, onChange, onDownloadPDF }: Props) {
     }
   };
 
-  const clearForm = () => {
-    onChange(initialData);
+  const addItem = () => {
+    onChange({
+      ...data,
+      items: [...data.items, { description: '', quantity: 1, rate: 0 }],
+    });
   };
 
-  const handleEmailInvoice = () => {
-    const subject = encodeURIComponent(`Invoice #${data.invoiceNumber} from ${data.billFrom.name}`);
-    const body = encodeURIComponent(`Please find attached Invoice #${data.invoiceNumber}.\n\nBest regards,\n${data.billFrom.name}`);
-    const mailtoLink = `mailto:${data.billTo.email}?subject=${subject}&body=${body}`;
-    window.location.href = mailtoLink;
+  const removeItem = (index: number) => {
+    const newItems = data.items.filter((_, i) => i !== index);
+    onChange({ ...data, items: newItems });
   };
 
   const inputClasses = "mt-1 h-14 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 border px-4 text-base";
@@ -104,7 +46,7 @@ export default function InvoiceForm({ data, onChange, onDownloadPDF }: Props) {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+      <div className="flex items-center gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">Company Logo</label>
           <div className="mt-1 flex items-center space-x-4">
@@ -127,33 +69,6 @@ export default function InvoiceForm({ data, onChange, onDownloadPDF }: Props) {
               className="hidden"
             />
           </div>
-          <div className="flex gap-3 sm:gap-4">
-            <button
-              onClick={onDownloadPDF}
-              className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors"
-              aria-label="Download invoice as PDF"
-            >
-              Download PDF
-            </button>
-          </div>
-        </div>
-        <div className="flex gap-4">
-          <button
-            onClick={handleEmailInvoice}
-            disabled={!data.billTo.email}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-            title={!data.billTo.email ? "Add recipient email first" : "Send invoice via email"}
-          >
-            <Mail className="h-4 w-4 mr-2" />
-            Email Invoice
-          </button>
-          <button
-            onClick={clearForm}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-          >
-            <RefreshCw className="h-4 w-4 mr-2" />
-            Create New Invoice
-          </button>
         </div>
       </div>
 
@@ -294,7 +209,7 @@ export default function InvoiceForm({ data, onChange, onDownloadPDF }: Props) {
                   type="text"
                   value={item.description}
                   onChange={(e) => handleItemChange(index, 'description', e.target.value)}
-                  placeholder="Item description (e.g., Web Design, Consulting, etc.)"
+                  placeholder="Item description"
                   className={`${inputClasses} min-w-0 sm:min-w-[300px]`}
                 />
               </div>
@@ -303,7 +218,7 @@ export default function InvoiceForm({ data, onChange, onDownloadPDF }: Props) {
                   type="number"
                   value={item.quantity}
                   onChange={(e) => handleItemChange(index, 'quantity', parseFloat(e.target.value))}
-                  placeholder="Hours/Qty"
+                  placeholder="Quantity"
                   min="0"
                   step="1"
                   className={inputClasses}
@@ -314,7 +229,7 @@ export default function InvoiceForm({ data, onChange, onDownloadPDF }: Props) {
                   type="number"
                   value={item.rate}
                   onChange={(e) => handleItemChange(index, 'rate', parseFloat(e.target.value))}
-                  placeholder="Rate per unit"
+                  placeholder="Rate"
                   min="0"
                   step="0.01"
                   className={inputClasses}
@@ -346,6 +261,37 @@ export default function InvoiceForm({ data, onChange, onDownloadPDF }: Props) {
           placeholder="Payment terms, bank details, additional notes..."
         />
       </div>
+
+      <div className="pt-8 border-t border-gray-200">
+        <button
+          onClick={onDownloadPDF}
+          className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors sm:w-auto"
+        >
+          <Download className="h-5 w-5 mr-2" />
+          Download PDF
+        </button>
+      </div>
     </div>
   );
 }
+
+const currencies = [
+  { code: 'USD', symbol: '$', name: 'US Dollar' },
+  { code: 'EUR', symbol: '€', name: 'Euro' },
+  { code: 'GBP', symbol: '£', name: 'British Pound' },
+  { code: 'JPY', symbol: '¥', name: 'Japanese Yen' },
+  { code: 'CAD', symbol: 'C$', name: 'Canadian Dollar' },
+  { code: 'AUD', symbol: 'A$', name: 'Australian Dollar' },
+  { code: 'CHF', symbol: 'Fr', name: 'Swiss Franc' },
+  { code: 'CNY', symbol: '¥', name: 'Chinese Yuan' },
+  { code: 'HKD', symbol: 'HK$', name: 'Hong Kong Dollar' },
+  { code: 'NZD', symbol: 'NZ$', name: 'New Zealand Dollar' },
+  { code: 'SEK', symbol: 'kr', name: 'Swedish Krona' },
+  { code: 'KRW', symbol: '₩', name: 'South Korean Won' },
+  { code: 'SGD', symbol: 'S$', name: 'Singapore Dollar' },
+  { code: 'NOK', symbol: 'kr', name: 'Norwegian Krone' },
+  { code: 'MXN', symbol: '$', name: 'Mexican Peso' },
+  { code: 'INR', symbol: '₹', name: 'Indian Rupee' },
+  { code: 'RUB', symbol: '₽', name: 'Russian Ruble' },
+  { code: 'ZAR', symbol: 'R', name: 'South African Rand' },
+];

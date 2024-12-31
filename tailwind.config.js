@@ -3,6 +3,19 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      colors: {
+        primary: {
+          light: '#F8F5F6',
+          DEFAULT: '#30D1D5',
+        },
+        secondary: {
+          light: '#BA9862',
+          DEFAULT: '#AE7D4B',
+        },
+        accent: {
+          DEFAULT: '#364754',
+        },
+      },
       screens: {
         'xs': '475px',
       },
@@ -18,9 +31,9 @@ export default {
             maxWidth: '65ch',
             color: 'inherit',
             a: {
-              color: '#3b82f6',
+              color: '#30D1D5',
               '&:hover': {
-                color: '#2563eb',
+                color: '#AE7D4B',
               },
             },
           },

@@ -1,8 +1,12 @@
 import React from 'react';
 import { FileText } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
-export function Header() {
+interface HeaderProps {
+  onDownloadPDF: () => void;
+  onPrint: () => void;
+}
+
+export function Header({ onDownloadPDF, onPrint }: HeaderProps) {
   return (
     <header className="bg-gradient-to-b from-gray-800 to-gray-900 text-white sticky top-0 z-50">
       <div className="max-w-7xl mx-auto py-6 sm:py-8 px-4 sm:px-6 lg:px-8">
@@ -16,32 +20,22 @@ export function Header() {
               Free online invoice generator for freelancers and small businesses. Create professional invoices in seconds.
             </p>
           </div>
-          <nav className="flex gap-4">
-            <Link
-              to="/"
-              className="text-sm sm:text-base font-medium hover:text-gray-300 transition-colors"
+          <div className="flex gap-3 sm:gap-4">
+            <button
+              onClick={onDownloadPDF}
+              className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors"
+              aria-label="Download invoice as PDF"
             >
-              Home
-            </Link>
-            <Link
-              to="/about"
-              className="text-sm sm:text-base font-medium hover:text-gray-300 transition-colors"
+              Download PDF
+            </button>
+            <button
+              onClick={onPrint}
+              className="inline-flex items-center justify-center px-4 py-2 border border-gray-600 text-sm font-medium rounded-md shadow-sm text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors"
+              aria-label="Print invoice"
             >
-              About Us
-            </Link>
-            <Link
-              to="/help"
-              className="text-sm sm:text-base font-medium hover:text-gray-300 transition-colors"
-            >
-              Help Center
-            </Link>
-            <Link
-              to="/contact"
-              className="text-sm sm:text-base font-medium hover:text-gray-300 transition-colors"
-            >
-              Contact Us
-            </Link>
-          </nav>
+              Print
+            </button>
+          </div>
         </div>
       </div>
     </header>

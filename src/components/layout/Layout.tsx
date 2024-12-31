@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header } from './Header/Header';
+import { SimpleHeader } from './Header/SimpleHeader';
 import { Footer } from './Footer';
 
 interface LayoutProps {
@@ -9,7 +9,7 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <Header />
+      <SimpleHeader />
       <main className="flex-1">
         {children}
       </main>

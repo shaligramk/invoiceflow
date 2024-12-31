@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { usePDF } from 'react-to-pdf';
 import type { InvoiceData } from '../types/invoice';
 import InvoiceForm from '../components/InvoiceForm';
-import { Header } from '../components/layout/Header';
+import { SimpleHeader } from '../components/layout/Header/SimpleHeader';
 import { Footer } from '../components/layout/Footer';
+import { FeaturedBlogSection } from '../components/blog/FeaturedBlogSection';
 
 const initialData: InvoiceData = {
   invoiceNumber: '001',
@@ -33,23 +34,39 @@ const initialData: InvoiceData = {
 
 export default function InvoicePage() {
   const [invoiceData, setInvoiceData] = useState<InvoiceData>(initialData);
-  const { toPDF, targetRef } = usePDF({
+  const { toPDF } = usePDF({
     filename: `invoice-${invoiceData.invoiceNumber}.pdf`,
     page: { margin: 20 },
   });
 
-  const handlePrint = () => {
-    window.print();
-  };
-
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      <Header onDownloadPDF={() => toPDF()} onPrint={handlePrint} />
+    <div className="min-h-screen bg-primary-light flex flex-col">
+      <SimpleHeader />
       
-      <main className="flex-1 flex items-center justify-center">
-        <div className="bg-white p-8 sm:p-12 rounded-lg shadow-lg w-full max-w-4xl">
-          <InvoiceForm data={invoiceData} onChange={setInvoiceData} />
+      <div className="bg-accent text-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
+          <p className="text-xl font-medium">
+            Free online invoice generator for freelancers and small businesses.
+            <br className="hidden sm:inline" />
+            Create professional invoices in seconds.
+          </p>
         </div>
+      </div>
+
+      <main className="flex-1">
+        <div className="py-12">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+              <InvoiceForm 
+                data={invoiceData} 
+                onChange={setInvoiceData} 
+                onDownloadPDF={() => toPDF()}
+              />
+            </div>
+          </div>
+        </div>
+        
+        <FeaturedBlogSection />
       </main>
 
       <Footer />
